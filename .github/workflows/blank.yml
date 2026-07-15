@@ -8,17 +8,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Configurar herramientas de red segura
+    - name: Actualizar sistema e instalar utilidades básicas
       run: |
         sudo apt-get update
-        sudo apt-get install -y tor torsocks openconnect secure-delete
+        sudo apt-get install -y curl wget git
 
-    - name: Iniciar servicios de privacidad
-      run: |
-        sudo systemctl start tor
-        echo "Tor iniciado correctamente en el runner."
-
-    - name: Crear túnel SSH Interactivo (Acceso Remoto)
+    - name: Crear túnel SSH e Interfaz Web (Anti-Bloqueo)
       uses: mxschmitt/action-tmate@v3
       with:
-        limit-access-to-actor: true # Solo tú podrás conectarte usando tu llave SSH de GitHub
+        limit-access-to-actor: true # Solo tú puedes entrar con tu llave SSH de GitHub
