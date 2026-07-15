@@ -1,0 +1,28 @@
+name: Bypass Terminal Web
+
+on: 
+  workflow_dispatch:
+
+jobs:
+  bypass:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Instalar ttyd
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y ttyd
+
+    - name: Iniciar Terminal Libre y Exponer Puerto
+      run: |
+        # Inicia ttyd en el puerto 8080 sin contraseñas y directo como root
+        ttyd -p 8080 bash &
+        
+        sleep 2
+        
+        echo "=========================================="
+        echo ">>> HAZ CLIC EN EL ENLACE DE ABAJO SELECCIONANDO LA URL HTTP/HTTPS <<<"
+        echo "=========================================="
+        
+        # Genera el bypass de red para darte la URL web pública de inmediato
+        ssh -o StrictHostKeyChecking=no -R 80:localhost:8080 nokey@localhost.run
