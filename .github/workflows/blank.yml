@@ -1,0 +1,24 @@
+name: Entorno Seguro SSH
+
+on: 
+  workflow_dispatch: # Permite activar el proceso manualmente desde GitHub
+
+jobs:
+  secure-ssh:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Configurar herramientas de red segura
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y tor torsocks openconnect secure-delete
+
+    - name: Iniciar servicios de privacidad
+      run: |
+        sudo systemctl start tor
+        echo "Tor iniciado correctamente en el runner."
+
+    - name: Crear túnel SSH Interactivo (Acceso Remoto)
+      uses: mxschmitt/action-tmate@v3
+      with:
+        limit-access-to-actor: true # Solo tú podrás conectarte usando tu llave SSH de GitHub
